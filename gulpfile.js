@@ -12,6 +12,15 @@ let gulp = require('gulp'),
     babel = require('gulp-babel');
 
 // Scripts
+gulp.task('babel', function () {
+    gulp.src([
+      'app/js/main.js'
+    ]).pipe(babel({presets: ['env']}))
+      .pipe(concat('js2015.js'))
+      .pipe(gulp.dest('app/js'))
+  }
+);
+
 gulp.task('scripts', function () {
     return gulp.src([
         'app/js/js2015.js',
@@ -32,15 +41,6 @@ gulp.task('browser-sync', function () {
     });
 });
 
-gulp.task('babel', function () {
-        gulp.src([
-            'app/js/main.js'
-        ]).pipe(babel({presets: ['env']}))
-            .pipe(concat('js2015.js'))
-            .pipe(gulp.dest('app/js'))
-    }
-);
-
 gulp.task('sass', function () {
     return gulp.src('app/sass/**/*.sass')
         .pipe(sourcemaps.init())
@@ -58,7 +58,7 @@ gulp.task('sass', function () {
 gulp.task('watch', ['sass', 'babel', 'scripts', 'browser-sync'], function () {
     gulp.watch('app/sass/**/*.sass', ['sass']);
     gulp.watch('app/js/main.js', ['babel']);
-    gulp.watch(['libs/**/*.js', 'app/js/main.js'], ['scripts']);
+    gulp.watch(['libs/**/*.js', 'app/js/js2015.js'], ['scripts']);
     gulp.watch('app/*.html', browserSync.reload);
 });
 
